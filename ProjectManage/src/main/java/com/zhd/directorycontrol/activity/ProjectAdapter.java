@@ -94,27 +94,26 @@ public class ProjectAdapter extends BaseAdapter {
         final RadioButton radio = (RadioButton) convertView.findViewById(R.id.rb);
         //给Holder中的radio附上对象
         holder.radio = radio;
+        //这里将所有radioButton的状态赋值为false,在点击事件开始之前下面已经将states赋值
         holder.radio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (String key : states.keySet()) {
-                    Log.d(TAG,key);
+                for (String key : states.keySet()) {//点击radioButton按钮时会将触发事件，先将所有的states设为false
                     states.put(key,false);
                 }
-                //给每个radioButton的状态
-                states.put(String.valueOf(index), radio.isChecked());
-                ProjectAdapter.this.notifyDataSetChanged();
+                states.put(String.valueOf(index), radio.isChecked());//将目前选中的radioButton赋值给states
+                ProjectAdapter.this.notifyDataSetChanged();//重新加载ProjectAdapter
             }
         });
-        //结果为false,如果对应的是空或者夹
+        //第一次将所有的states状态都设为false，以后则会将选中的和未被选中的一起拿进去
         boolean res = false;
         if (states.get(String.valueOf(position)) == null
-                || states.get(String.valueOf(position)) == false) {
+                || states.get(String.valueOf(position)) == false) {//判断条件，当前position位置的states不存在或者为false
             res = false;
-            //就向其中添加个<位置信息><false>
+            //就向其中添加<position,false>
             states.put(String.valueOf(position), false);
         } else
-            res = true;
+            res = true;//如果为里面有选中的则一直为true,第一次肯定是都不选中的
         holder.radio.setChecked(res);
         return convertView;
 //            //将当前的位置传递进事件监听
