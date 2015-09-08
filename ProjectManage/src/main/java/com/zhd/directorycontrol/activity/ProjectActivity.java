@@ -15,16 +15,14 @@ import android.widget.Toast;
 import com.zhd.directorycontrol.ui.CustomDialog;
 import com.zhd.directorycontrol.model.Project;
 import com.zhd.directorycontrol.R;
-import com.zhd.directorycontrol.ui.IDialogCallback;
+import com.zhd.directorycontrol.callback.IDialogCallback;
 import com.zhd.directorycontrol.util.Method;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +39,7 @@ public class ProjectActivity extends Activity {
     //private List<File> mProFiles;
     private boolean mHasProject;
     private String[] mConfigs = new String[3];
+    private Project mproject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

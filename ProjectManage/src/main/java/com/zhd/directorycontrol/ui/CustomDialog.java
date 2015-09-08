@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.zhd.directorycontrol.R;
+import com.zhd.directorycontrol.callback.IDialogCallback;
 
 /**
  * Created by juiz on 2015/9/7.
