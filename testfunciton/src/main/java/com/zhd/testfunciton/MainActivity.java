@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
+
 import java.io.File;
 
 
@@ -19,11 +20,10 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        btn_dire = (Button) findViewById(R.id.btn_directory);
-        btn_dire.setOnClickListener(this);
+//        btn_dire = (Button) findViewById(R.id.btn_directory);
+//        btn_dire.setOnClickListener(this);
         //在创建的时候创建一个文件夹用来存储所有的文件
-        createDirectory();
-
+//        createDirectory();
     }
 
     private void createDirectory() {

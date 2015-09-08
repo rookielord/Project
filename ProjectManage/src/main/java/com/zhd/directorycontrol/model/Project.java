@@ -8,19 +8,22 @@ import java.io.File;
  * 名称
  * 创建时间
  * 备注内容
- * 配置文件(以上3个都会被写入其中)
+ * 对应数据库中的表
+ * 配置文件(以上4个都会被写入其中)
  */
 public class Project {
     private String mName;
     private String mTime;
     private String mBackup;
     private File mConfig;
+    private String mTableName;
 
-    public Project(String mName, String mTime, String mBackup, File mConfig) {
+    public Project(String mName, String mTime, String mBackup, String mTableName, File mConfig) {
         this.mName = mName;
         this.mTime = mTime;
         this.mBackup = mBackup;
         this.mConfig = mConfig;
+        this.mTableName = mTableName;
     }
 
     public String getmName() {
@@ -39,19 +42,27 @@ public class Project {
         this.mTime = mTime;
     }
 
-    public File getmConfig() {
-        return mConfig;
-    }
-
-    public void setmConfig(File mConfig) {
-        this.mConfig = mConfig;
-    }
-
     public String getmBackup() {
         return mBackup;
     }
 
     public void setmBackup(String mBackup) {
         this.mBackup = mBackup;
+    }
+
+    public String getmTableName() {
+        return mTableName;
+    }
+
+    public void setmTableName(String mTableName) {
+        this.mTableName = mTableName;
+    }
+
+    public File getmConfig() {
+        return mConfig;
+    }
+
+    public void setmConfig(File mConfig) {
+        this.mConfig = mConfig;
     }
 }

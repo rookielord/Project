@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
@@ -47,6 +48,24 @@ public class ProjectActivity extends Activity {
                 deleteFile(new File(path + "/pro0"));
             }
         });
+        Button btn_repeat = (Button) findViewById(R.id.btn_repeat);
+        btn_repeat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String pro_name="pro1";
+                File pro_file=new File(path+"/"+pro_name);
+                File current_file = new File(path);
+                File[] files = current_file.listFiles();
+                for (File file:files){
+                    if (file.equals(pro_file)){
+                        Toast.makeText(ProjectActivity.this,"项目名称重复",Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+                Toast.makeText(ProjectActivity.this,"项目可以创建",Toast.LENGTH_SHORT).show();
+
+            }
+        });
         //分别创建3个文件夹
         for (int i = 0; i < 3; i++) {
             File file = new File(path + "/" + "pro" + i);
@@ -69,10 +88,9 @@ public class ProjectActivity extends Activity {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             //关闭流
-            if (out!=null)
+            if (out != null)
                 try {
                     out.close();
                 } catch (IOException e) {
