@@ -6,12 +6,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.zhd.directorycontrol.callback.IProject;
+import com.zhd.directorycontrol.db.Curd;
 import com.zhd.directorycontrol.ui.CustomDialog;
 import com.zhd.directorycontrol.model.Project;
 import com.zhd.directorycontrol.R;
@@ -27,7 +29,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.view.View.*;
 
 /**
  * Created by 2015032501 on 2015/9/7.
@@ -36,10 +37,11 @@ public class ProjectActivity extends Activity {
     private ListView mlv;
     private String mPath;
     private List<Project> mProjects;
-    //private List<File> mProFiles;
     private boolean mHasProject;
     private String[] mConfigs = new String[3];
-    private Project mproject;
+    private Project mProject;
+    private TextView tv_proinfo;
+    private ProjectAdapter pa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,28 +50,34 @@ public class ProjectActivity extends Activity {
         Intent intent = getIntent();
         mPath = intent.getStringExtra("path");
         mlv = (ListView) findViewById(R.id.lv);
-        Button btn= (Button) findViewById(R.id.btn_del);
-        btn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                File file=new File(mPath);
-                Method.DeleteDirectory(file);
-            }
-        });
+        tv_proinfo= (TextView) findViewById(R.id.tv_proinfo);
         //获得Project目录下所有的Project文件对象
         mHasProject = HasProject(mPath);
         if (mHasProject) {
             mProjects = getProjectInstance(mPath);
             //将对象传给适配器，然后对item内容进行填充
-            ProjectAdapter pa = new ProjectAdapter(mProjects, getApplicationContext());
+            pa = new ProjectAdapter(mProjects, getApplicationContext());
+            pa.setmP(new IProject() {
+                @Override
+                public void getItemPosition(int position) {
+                    mProject = mProjects.get(position);
+                    showProjectInfo(mProject);
+                }
+            });
             //第三步通过适配器，将项目显示到ListView上
             mlv.setAdapter(pa);
+
         } else
         {
             Toast.makeText(ProjectActivity.this, "当前没有项目", Toast.LENGTH_LONG).show();
         }
     }
 
+    private void showProjectInfo(Project project) {
+        String msg="项目的名称："+project.getmName()+"\t\n" +
+                "项目的对应表格" +project.getmTableName()+"\t\n";
+        tv_proinfo.setText(msg);
+    }
 
     //第一步查看是否有新建项目
     private boolean HasProject(String mPath) {
@@ -139,7 +147,8 @@ public class ProjectActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.item_create) {
+        switch (id){
+            case R.id.item_create:
             //这里实现创建项目,使用dialog来创建
             CustomDialog dialog = new CustomDialog();
             //把dialog放进服务中进行显示
@@ -150,7 +159,7 @@ public class ProjectActivity extends Activity {
                 public void getInfo(View view) {
                     EditText et1 = (EditText) view.findViewById(R.id.et_pro_name);
                     String pro_name = et1.getText().toString();
-                    boolean isRight = Method.CheckMsg(pro_name);
+                    boolean isRight = Method.checkMsg(pro_name);
                     if (isRight) {
                         mConfigs[0] = pro_name;//获得项目名称
                     } else {
@@ -164,12 +173,44 @@ public class ProjectActivity extends Activity {
                     mConfigs[2] = add_time;//添加时间
                     //创建文件夹，写入config.txt配置文件,如果写在外面会先执行这个,在点击item的时候就会执行
                     //而我必须在点击确定后才能执行这段代码，所以在外面执行全为空
+                    //获得添加的项目对象
                     boolean res = Method.createDirectory(mPath, mConfigs, getApplicationContext());
+                    if (res) {
+                        Toast.makeText(ProjectActivity.this, "创建成功", Toast.LENGTH_SHORT).show();
+                        //刷新
+                        refresh();
+                        mProject=null;
+                    }
+                    else
+                        Toast.makeText(ProjectActivity.this,"创建失败",Toast.LENGTH_SHORT).show();
                 }
             });
+                break;
+            case R.id.item_delte:
+                if (mProject!=null) {
+                    //删除表
+                    Curd curd=new Curd(mProject.getmTableName(),getApplicationContext());
+                    curd.dropTable(mProject.getmTableName());
+                    //删除项目文件
+                    File file = new File(mPath+"/"+mProject.getmName());
+                    Method.deleteDirectory(file);
+                    //提示
+                    Toast.makeText(ProjectActivity.this,"删除成功",Toast.LENGTH_SHORT).show();
+                    //这里刷新只会重读ProjectAdapter，但Adapter中projects对象的数量没有变化，可以在这里对
+                    //删除Adapter里面的mProjects数据
+                    refresh();
+                    mProject=null;
+                }else {
+                    Toast.makeText(ProjectActivity.this,"请选择项目",Toast.LENGTH_SHORT).show();
+                }
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    //重新刷新整个Activity来获取文件列表
+    public void refresh(){
+        onCreate(null);
+    }
 
 }

@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
  */
 public class Method {
 
-    public static boolean CheckMsg(String msg) {
+    public static boolean checkMsg(String msg) {
         boolean check1, check2;
         check1 = msg.trim().isEmpty();
         String regEx = "[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
@@ -85,12 +85,12 @@ public class Method {
         return mTableName;
     }
 
-    public static void DeleteDirectory(File del_directory) {
+    public static void deleteDirectory(File del_directory) {
         if (del_directory.isDirectory()) {
             File[] files = del_directory.listFiles();
             for (File file : files) {
                 //因为在目录下还会有目录，所以先递归调用
-                DeleteDirectory(file);
+                deleteDirectory(file);
                 file.delete();
                 //删除完子目录和子文件后删除自己
             }

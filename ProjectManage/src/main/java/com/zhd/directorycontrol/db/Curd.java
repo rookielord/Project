@@ -24,14 +24,19 @@ public class Curd {
 
     //创建项目对应的表
     public void createTable(String Tablename) {
-         String CREATE_POINT="CREATE TABLE "+Tablename+"( " +
+         String create_table="CREATE TABLE "+Tablename+"( " +
                  "id integer primary key autoincrement," +
                 "name varchar(10) ," +
                 "N varchar(32) ," +
                 "E varchar(32) ," +
                 "Z varchar(32) ," +
                 "DES text);";
-        mDb.execSQL(CREATE_POINT);
+        mDb.execSQL(create_table);
+    }
+    //删除项目时，需要读取其配置文件中的表名，先删除表然后再删除项目文件
+    public void dropTable(String Tablename){
+        String drop_table="DROP TABLE IF EXISTS "+Tablename;
+        mDb.execSQL(drop_table);
     }
 
     //插入操作

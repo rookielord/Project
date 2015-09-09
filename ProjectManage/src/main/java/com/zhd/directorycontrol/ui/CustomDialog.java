@@ -19,28 +19,6 @@ public class CustomDialog extends DialogFragment {
 
     private IDialogCallback mCallback;
     private View mView;
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
-//        //创建layout布局文件
-//        LayoutInflater inflater=getActivity().getLayoutInflater();
-//        //填充布局文件
-//        builder.setView(inflater.inflate(R.layout.dialog_sign,null))
-//                //设置按钮
-//        .setPositiveButton("创建", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//
-//            }
-//        })
-//                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//
-//                    }
-//                });
-//    }
 
     //回调函数
     public void setmCallback(IDialogCallback mCallback) {
@@ -51,7 +29,7 @@ public class CustomDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         //使用dialogbuild来创建
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        //设置layoutInflater来
+        //设置layoutInflater布局填充器来填充布局
         //LayoutInflater inflater=LayoutInflater.from(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         //将AlertDialog用布局填充器进行设置和填充(这里获取view对象，用来获取上面的信息)

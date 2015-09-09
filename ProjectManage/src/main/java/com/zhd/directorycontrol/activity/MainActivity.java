@@ -15,7 +15,7 @@ import java.io.File;
 
 public class MainActivity extends ActionBarActivity implements OnClickListener{
 
-    Button btn_project;
+    Button btn_project,btn_starmap;
     private static String mPath;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +23,9 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
         setContentView(R.layout.activity_main);
         createDirectory();
         btn_project= (Button) findViewById(R.id.btn_project);
+        btn_starmap= (Button) findViewById(R.id.btn_starmap);
         btn_project.setOnClickListener(this);
+        btn_starmap.setOnClickListener(this);
     }
 
     private void createDirectory() {
@@ -51,6 +53,10 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
                 Intent project=new Intent("com.zhd.project.START");
                 project.putExtra("path",mPath);
                 startActivity(project);
+                break;
+            case R.id.btn_starmap:
+                Intent starmap=new Intent(this,StarMapActivity.class);
+                startActivity(starmap);
                 break;
         }
     }

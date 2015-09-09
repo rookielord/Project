@@ -24,6 +24,7 @@ import java.util.Map;
  * Created by 2015032501 on 2015/9/7.
  */
 public class ProjectAdapter extends BaseAdapter {
+    //回调函数来获取选中
     private IProject mP;
 
     public void setmP(IProject mP) {
@@ -32,7 +33,6 @@ public class ProjectAdapter extends BaseAdapter {
 
     private List<Project> mProjects;
     private Context mContext;
-    private int mCheckedIndex = -1;//默认没有选择
     private static String TAG = "Adapter";
     //用来存放所有的Radio状态
     Map<String, Boolean> states = new HashMap<String, Boolean>();
@@ -46,6 +46,13 @@ public class ProjectAdapter extends BaseAdapter {
     class ViewHolder {
         TextView pro_name, pro_back, pro_time;
         RadioButton radio;
+    }
+    //在ProjectActivity中进行删除的话，重新加载Adapter需要删除mProjects中的内容进行删除,添加同理
+    public void deleteItem(int position){
+        mProjects.remove(position);
+    }
+    public void addItem(Project project){
+        mProjects.add(project);
     }
 
     @Override
@@ -102,6 +109,7 @@ public class ProjectAdapter extends BaseAdapter {
                     states.put(key,false);
                 }
                 states.put(String.valueOf(index), radio.isChecked());//将目前选中的radioButton赋值给states
+                mP.getItemPosition(index);
                 ProjectAdapter.this.notifyDataSetChanged();//重新加载ProjectAdapter
             }
         });
@@ -116,35 +124,5 @@ public class ProjectAdapter extends BaseAdapter {
             res = true;//如果为里面有选中的则一直为true,第一次肯定是都不选中的
         holder.radio.setChecked(res);
         return convertView;
-//            //将当前的位置传递进事件监听
-//            final int index = position;
-//            //创建需要赋值的控件对象
-//
-//            View v = View.inflate(mContext, R.layout.item_pro, null);
-//
-//            //找到对应的控件
-//            pro_name = (TextView) v.findViewById(R.id.tv_proname);
-//            pro_back = (TextView) v.findViewById(R.id.tv_proback);
-//            pro_time = (TextView) v.findViewById(R.id.tv_protime);
-//            radio = (RadioButton) v.findViewById(R.id.rb);
-//            //设置对应的内容
-//            pro_name.setText(p.getmName());
-//            pro_back.setText(p.getmBackup());
-//            pro_time.setText(p.getmTime());
-//            //设置一个
-//            //对radioButton设置选中监听,选中
-//            radio.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//                @Override
-//                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                    if (isChecked) {
-//                        Log.d(TAG, "checked");
-//                        mCheckedIndex = index;
-//                    }
-//                }
-//            });
-//            return v;
-//        } else {
-//            return convertView;
-//        }
     }
 }

@@ -4,11 +4,11 @@
     <item
         android:id="@+id/item_create"
         android:orderInCategory="2"
-        android:title="@string/action_create"
+        android:title="项目创建"
         />
     <item
-        android:id="@+id/item_test"
+        android:id="@+id/item_delte"
         android:orderInCategory="1"
-        android:title="测试"
+        android:title="项目删除"
         />
 </menu>
